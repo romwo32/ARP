@@ -20,6 +20,8 @@ Stand der Dokumentation ist der 18. November 2026. Die manuelle Steuerung ist im
 
 Am 17. November 2026 wurden die Debug-APK und Android Lint erfolgreich ausgeführt. Lint meldete 11 Warnungen. Der Emulator-Test prüfte je Richtung 25 aufeinanderfolgende Motorbefehle bei stillgehaltenem Finger, anschließend den Stopp sowie Abbruch, zweiten Finger und Fokusverlust. Die Bluetooth-Übertragung wurde dabei simuliert. Fahrverhalten, Drehrichtung und Anhalteweg müssen am echten Roboter geprüft werden.
 
+Seit dem 18. November 2026 ist ein wiederholbarer Android-Test im Projekt enthalten. Alle fünf Tests wurden im Emulator erfolgreich ausgeführt. Bei jeweils zehn Sekunden Halten entstanden 96 Vorwärts- und 95 Rückwärtsbefehle. Der größte gemessene Abstand betrug 240 ms. Loslassen, Touch-Abbruch, Fokusverlust und Pausieren lösten jeweils den Stopp aus. Die Anleitung beschreibt den Start direkt in Android Studio. [Ohne Roboter testen](ButtonDemo/README.md#ohne-roboter-testen)
+
 ## Hardware und Aufbau
 
 Die Planung orientiert sich am mBot Ranger aus den Kursunterlagen.
