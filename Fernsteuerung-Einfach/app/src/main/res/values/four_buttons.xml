@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name_four_buttons">Roboter 4 Tasten</string>
+    <string name="turn_left">Links drehen</string>
+    <string name="turn_right">Rechts drehen</string>
+    <string name="connected_controls">Verbunden. Regler steuern direkt; Richtungstasten gedrückt halten.</string>
+    <string name="speed_value">Geschwindigkeit: %1$d · %2$d %%</string>
+    <string name="steering_value">Lenkung: %1$d</string>
+    <string name="speed_description">Geschwindigkeit einstellen</string>
+    <string name="steering_description">Lenkung einstellen</string>
+    <string name="speed_hint">0 rückwärts · 50 Stopp · 100 vorwärts</string>
+    <string name="steering_hint">0 links · 50 geradeaus · 100 rechts</string>
+    <string name="slider_drive_hint">Die Regler steuern direkt und behalten ihren Wert beim Loslassen. Geschwindigkeit 50 stoppt beide Motoren.</string>
+</resources>
