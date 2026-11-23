@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ButtonDemo</string>
+    <string name="connect">Verbinden</string>
+    <string name="forward">Vorwärts</string>
+    <string name="reverse">Rückwärts</string>
+    <string name="disconnected">Kein Roboter verbunden.</string>
+    <string name="select_robot">Gekoppelten Roboter auswählen</string>
+    <string name="connecting">Verbindung wird aufgebaut …</string>
+    <string name="connected">Verbunden. Zum Fahren eine Richtung gedrückt halten.</string>
+    <string name="connection_failed">Verbindung fehlgeschlagen. Ist der Roboter eingeschaltet?</string>
+    <string name="permission_denied">Zum Verbinden den Zugriff auf Geräte in der Nähe erlauben.</string>
+    <string name="bluetooth_off">Bluetooth ist ausgeschaltet oder nicht verfügbar.</string>
+    <string name="no_devices">Zuerst den Roboter in den Bluetooth-Einstellungen koppeln.</string>
+</resources>
