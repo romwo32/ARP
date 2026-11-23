@@ -1,5 +1,6 @@
 package com.hbrs;
 
+import android.Manifest;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -311,6 +312,52 @@ public class MainActivity2TouchTest {
             assertEquals(50, tempoRegler.getProgress());
             assertEquals(50, lenkRegler.getProgress());
             assertFalse(tempoRegler.getKeepScreenOn());
+        });
+    }
+
+    @Test
+    public void openingCameraStopsSlidersAndClosingDoesNotRestart() {
+        allowCamera();
+        setSliders(80, 75);
+        expectMotorCommand(-Math.round(driveSpeed * 0.6f), Math.round(driveSpeed * 0.3f));
+
+        instrumentation.runOnMainSync(() -> activity.findViewById(R.id.open_camera).performClick());
+        expectStopped();
+        assertSlidersNeutral();
+        assertCameraVisible(true);
+
+        instrumentation.runOnMainSync(() -> activity.findViewById(R.id.close_camera).performClick());
+        assertCameraVisible(false);
+        expectNoMoreCommands();
+    }
+
+    @Test
+    public void openingCameraStopsHeldButtonAndBackReturnsToControls() {
+        allowCamera();
+        touch(forward, MotionEvent.ACTION_DOWN);
+        expectMotorCommand(-driveSpeed, driveSpeed);
+
+        instrumentation.runOnMainSync(() -> activity.findViewById(R.id.open_camera).performClick());
+        expectStopped();
+        assertCameraVisible(true);
+
+        instrumentation.runOnMainSync(() -> activity.getOnBackPressedDispatcher().onBackPressed());
+        assertCameraVisible(false);
+        expectNoMoreCommands();
+    }
+
+    private void allowCamera() {
+        instrumentation.getUiAutomation().grantRuntimePermission(
+                instrumentation.getTargetContext().getPackageName(), Manifest.permission.CAMERA);
+        instrumentation.waitForIdleSync();
+    }
+
+    private void assertCameraVisible(boolean visible) {
+        instrumentation.runOnMainSync(() -> {
+            assertEquals(visible ? View.VISIBLE : View.GONE,
+                    activity.findViewById(R.id.camera_panel).getVisibility());
+            assertEquals(visible ? View.GONE : View.VISIBLE,
+                    activity.findViewById(R.id.controls_scroll).getVisibility());
         });
     }
 

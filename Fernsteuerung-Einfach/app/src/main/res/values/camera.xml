@@ -1,0 +1,10 @@
+<resources>
+    <string name="open_camera">Kamera öffnen</string>
+    <string name="camera_mode_title">Live-Kamera</string>
+    <string name="camera_starting">Kamera wird gestartet …</string>
+    <string name="camera_live">Livebild aktiv · Roboter steht</string>
+    <string name="camera_permission_denied">Kamerazugriff fehlt. Erlaube ihn in den Android-App-Einstellungen.</string>
+    <string name="camera_unavailable">Kamera konnte nicht gestartet werden.</string>
+    <string name="camera_retry">Erneut versuchen</string>
+    <string name="close_camera">Zurück zur Steuerung</string>
+</resources>

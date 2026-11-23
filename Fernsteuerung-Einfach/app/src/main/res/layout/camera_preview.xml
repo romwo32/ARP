@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/camera_panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/camera_mode_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#101820"
+        android:foreground="@drawable/camera_frame">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:implementationMode="compatible"
+            app:scaleType="fillCenter" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/camera_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
+        android:paddingTop="8dp"
+        android:text="@string/camera_starting" />
+
+    <Button
+        android:id="@+id/camera_retry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/camera_retry"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/close_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/close_camera" />
+</LinearLayout>
