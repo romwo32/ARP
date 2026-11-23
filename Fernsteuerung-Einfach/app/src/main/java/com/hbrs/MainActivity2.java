@@ -1,7 +1,6 @@
 package com.hbrs;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -17,16 +16,20 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
+
 import com.hbrs.ORB.ORB;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity2 extends Activity
+public class MainActivity2 extends ComponentActivity
         implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
     private static final int DRIVE_SPEED = 5100;
     private static final int REFRESH_MS = 100;
     private static final int BLUETOOTH_PERMISSION = 1;
+    private static final int CAMERA_PERMISSION = 2;
 
     private final Handler timer = new Handler(Looper.getMainLooper());
     // Bluetooth arbeitet im Hintergrund, damit die Bedienung nicht hängen bleibt.
@@ -37,6 +40,14 @@ public class MainActivity2 extends Activity
     private SeekBar tempoRegler, lenkRegler;
     private View gedrueckterButton;
     private boolean reglerAktiv;
+    private View steuerung, kameraAnsicht;
+    private CameraPreviewController kamera;
+    private final OnBackPressedCallback kameraZurueck = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackPressed() {
+            kameraSchliessen();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle state) {
@@ -67,12 +78,53 @@ public class MainActivity2 extends Activity
         linksButton.setOnTouchListener(this);
         rechtsButton.setOnTouchListener(this);
         bedienungFreigeben(false);
+
+        steuerung = findViewById(R.id.controls_scroll);
+        kameraAnsicht = findViewById(R.id.camera_panel);
+        kamera = new CameraPreviewController(this, findViewById(R.id.camera_preview),
+                findViewById(R.id.camera_status), findViewById(R.id.camera_retry));
+        findViewById(R.id.open_camera).setOnClickListener(this);
+        findViewById(R.id.close_camera).setOnClickListener(this);
+        findViewById(R.id.camera_retry).setOnClickListener(this);
+        getOnBackPressedDispatcher().addCallback(this, kameraZurueck);
     }
 
     // Android ruft diese Methoden bei Klicks und Regleränderungen auf.
     @Override
     public void onClick(View view) {
-        roboterAuswaehlen();
+        if (view.getId() == R.id.connect) {
+            roboterAuswaehlen();
+        } else if (view.getId() == R.id.open_camera) {
+            kameraOeffnen();
+        } else if (view.getId() == R.id.close_camera) {
+            kameraSchliessen();
+        } else if (view.getId() == R.id.camera_retry) {
+            kameraStarten();
+        }
+    }
+
+    private void kameraOeffnen() {
+        // Vor dem Wechsel zur Kamera die Fahrt beenden, auch bei aktiven Reglern.
+        anhalten();
+        steuerung.setVisibility(View.GONE);
+        kameraAnsicht.setVisibility(View.VISIBLE);
+        kameraZurueck.setEnabled(true);
+        kameraStarten();
+    }
+
+    private void kameraStarten() {
+        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            kamera.starten();
+        } else {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+        }
+    }
+
+    private void kameraSchliessen() {
+        kamera.stoppen();
+        kameraAnsicht.setVisibility(View.GONE);
+        steuerung.setVisibility(View.VISIBLE);
+        kameraZurueck.setEnabled(false);
     }
 
     @Override
@@ -282,6 +334,16 @@ public class MainActivity2 extends Activity
     @Override
     public void onRequestPermissionsResult(int anfrage, String[] berechtigungen, int[] ergebnisse) {
         super.onRequestPermissionsResult(anfrage, berechtigungen, ergebnisse);
+        if (anfrage == CAMERA_PERMISSION) {
+            if (kameraAnsicht.getVisibility() == View.VISIBLE) {
+                if (ergebnisse.length > 0 && ergebnisse[0] == PackageManager.PERMISSION_GRANTED) {
+                    kamera.starten();
+                } else {
+                    kamera.zeigeFehler(R.string.camera_permission_denied);
+                }
+            }
+            return;
+        }
         if (anfrage != BLUETOOTH_PERMISSION) {
             return;
         }
@@ -343,6 +405,7 @@ public class MainActivity2 extends Activity
     @Override
     protected void onDestroy() {
         anhalten();
+        kamera.stoppen();
         bluetoothArbeit.execute(orb::close);
         bluetoothArbeit.shutdown();
         super.onDestroy();
