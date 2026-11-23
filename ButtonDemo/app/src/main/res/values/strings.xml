@@ -3,6 +3,16 @@
     <string name="connect">Verbinden</string>
     <string name="forward">Vorwärts</string>
     <string name="reverse">Rückwärts</string>
+    <string name="left">Links drehen</string>
+    <string name="right">Rechts drehen</string>
+    <string name="open_camera">Kamera öffnen</string>
+    <string name="camera_mode_title">Live-Kamera</string>
+    <string name="camera_starting">Kamera wird gestartet …</string>
+    <string name="camera_live">Livebild aktiv · keine Steuerung läuft</string>
+    <string name="camera_permission_denied">Kamerazugriff fehlt. Erlaube ihn in den Android-App-Einstellungen.</string>
+    <string name="camera_unavailable">Kamera konnte nicht gestartet werden.</string>
+    <string name="camera_retry">Kamerazugriff erneut anfragen</string>
+    <string name="close_camera">Kameramodus beenden</string>
     <string name="disconnected">Kein Roboter verbunden.</string>
     <string name="select_robot">Gekoppelten Roboter auswählen</string>
     <string name="connecting">Verbindung wird aufgebaut …</string>
